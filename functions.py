@@ -28,16 +28,30 @@ def crop_picture(picture, columns=18, newbox=(104,89,2079,1126)):
     
     return phrases
 
-def is_white(phrase):
-    blackness = 255-np.average(phrase)
-    return True if blackness < 0.05 else False
+def symbol(phrase):
+    blackness = 255-np.average(ImageOps.grayscale(phrase))
+    if blackness == 123:
+        return 'Fire'
+    elif blackness == 124:
+        return 'Chest'
+    elif blackness == 123:
+        return 'Devil'
+    else:
+        return 'Text'
 
-def is_first_line(phrase, height=84):
+def is_top_white(phrase, height=84):
     width, _ = phrase.size
     img_top = ImageOps.grayscale(phrase.crop((0,0,width,height)))
     blackness = 255-np.average(img_top)
     print(blackness)
     return True if blackness < 0.1 else False
+
+def line_concat(first_line):
+    text = first_line.text
+    if not first_line.next_line.is_line_start:
+        text += line_concat(first_line.next_line)
+    
+    return text
 
 
      
