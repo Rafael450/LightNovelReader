@@ -28,23 +28,17 @@ def crop_picture(picture, columns=18, newbox=(104,89,2079,1126)):
     
     return phrases
 
+def is_white(phrase):
+    blackness = 255-np.average(phrase)
+    return True if blackness < 0.05 else False
+
 def is_first_line(phrase, height=84):
     width, _ = phrase.size
     img_top = ImageOps.grayscale(phrase.crop((0,0,width,height)))
     blackness = 255-np.average(img_top)
     print(blackness)
-    return True if blackness < 0.5 else False
+    return True if blackness < 0.1 else False
 
 
-    
-    
-
-
-for i in range(17):
-    print(is_first_line(Image.open('.\\phrase_test\\{}.png'.format(i))))
-# takePictures(35)
-# cropPicture(Image.open('.\\snapshots\\30.png'))
-
-
-        
+     
 
